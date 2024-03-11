@@ -79,8 +79,32 @@
             <a href="{{ route('post.edit',$post->id) }}" class="btn btn-sm btn-warning">수정</a>
             @endif
             <a href="{{ route('post.getbyid',$post->id) }}" class="btn btn-sm btn-primary">보기</a>
+            <!-- 삭제 모달 버튼-->
             @if ($post->user_id == $loggedInUserId)
-            <a href="{{ route('post.delete',$post->id) }}" class="btn btn-sm btn-danger">삭제</a>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+              삭제
+            </button>
+
+            <!-- Modal -->  
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">게시글 삭제</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    게시글을 삭제하시겠습니까? 
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                    <a href="{{ route('post.delete',$post->id) }}" class="btn btn-sm btn-danger">삭제</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {{-- <a href="{{ route('post.delete',$post->id) }}" class="btn btn-sm btn-danger">삭제</a> --}}
             @endif
           </td>
           

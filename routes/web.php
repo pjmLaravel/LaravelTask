@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\RegisterController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -50,3 +52,14 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // 댓글 추가
 Route::post('/comments/store', [CommentController::class, 'store'])->name('comment.add');
+
+
+// 로그인 페이지
+
+Route::get('/email', [RegisterController::class,'ShowLoginForm']);
+
+// 회원가입 페이지
+
+Route::get('/register', [RegisterController::class, 'showRegisterForm']);
+
+Route::get('/amu' , [amuController::class, 'amu']);
