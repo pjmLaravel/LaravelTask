@@ -51,21 +51,30 @@
     </style>
 </head>
 <body>
+    @if(session('error'))
+    <script>
+        alert("{{ session('error') }}");
+    </script>
+@endif
 
-    ㅇㅇ
-    <form action="" method="post">
+    <form action="{{ route('login') }}" method="post">
+        
+        @csrf
+
         <h2>로그인</h2>
-        <label for="username">사용자명 또는 이메일:</label>
-        <input type="text" id="username" name="username" required>
-
-        <label for="password">비밀번호:</label>
+        이메일:
+        <input type="email" id="email" name="email" required>
+        비밀번호:
         <input type="password" id="password" name="password" required>
-
-        <button type="submit">로그인</button>
+        <div class="signup-link">
+            <p>계정이 없으신가요? <a href="{{ route('login.registerForm') }}">회원가입</a></p>
+            <div style="margin-top: -9px">
+            <a href="{{ route('login.kakao') }}" style="margin-top:10px">
+            <img src="/image/kakao.png" alt="카카오 로그인 이미지">
+            </a>
+        </div>
+        </div>
+        <button type="submit" style="margin-top:20px">로그인</button>
     </form>
-
-    <div class="signup-link">
-        <p>계정이 없으신가요? <a href="{{ route('registerForm') }}">회원가입</a></p>
-    </div>
 </body>
 </html>

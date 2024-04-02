@@ -10,6 +10,9 @@
       .logout:hover {
         text-decoration: underline; 
       }
+      .ck-editor__editable_inline {
+            min-height: 300px;
+        }
     </style>
   </head>
 <body>
@@ -26,12 +29,23 @@
 </div>
 @endif
 
+@if (Session::has('post_create'))
+<div class="alert alert-success" role="alert">
+    {{ Session::get('post_create') }}
+</div>
+@endif
+
 
     {{-- {{ dd(Auth::user()) }} --}}
+
+   
     @guest   
-    <a href="{{ route('login.kakao') }}">
+    {{-- <a href="{{ route('login.kakao') }}">
     <img src="/image/kakao.png" alt="카카오 로그인 이미지" style="margin-left:1000px; margin-top:30px">
-  </a>
+    </a> --}}
+    <div style="margin-left:1100px; margin-top:60px">
+    <a href="{{ route('login.login') }}" class="btn btn-sm btn-secondary">로그인</a>
+    </div>  
   @endguest
 </div>
 <div style="margin-left:1100px; margin-top:50px">
@@ -64,17 +78,21 @@
         <tr>
           <th>작성자</th>
           <th>제목</th>
-          <th>내용</th>
+          {{-- <th>내용</th> --}}
           <th>처리</th>
         </tr>
       </thead>
       <tbody>
         @foreach ($posts as $post)
         <tr>
+  
           <td>{{$post->name}}</td>
           <td>{{$post->subject}}</td>
-          <td>{{$post->content}}</td>
+          
+          {{-- <td>{!! $post->content !!}</td> --}}
+        
           <td>
+            
             @if ($post->user_id == $loggedInUserId)
             <a href="{{ route('post.edit',$post->id) }}" class="btn btn-sm btn-warning">수정</a>
             @endif
@@ -119,5 +137,6 @@
  
  
   </div>
+  <script src="https://cdn.ckeditor.com/ckeditor5/37.1.0/classic/ckeditor.js"></script>
 </body>
 </html>

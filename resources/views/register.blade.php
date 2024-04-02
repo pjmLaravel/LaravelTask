@@ -43,24 +43,58 @@
             border-radius: 4px;
             cursor: pointer;
         }
+
+        .hide {
+            display: none
+        }
     </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
 </head>
 <body>
-    <form action="register.php" method="post">
-        <h2>회원가입</h2>
-        <label for="username">사용자명:</label>
-        <input type="text" id="username" name="username" required>
 
-        <label for="email">이메일:</label>
-        <input type="email" id="email" name="email" required>
+    @if (Session::has('error')) 
+        <div class="alert alert-danger" role="alert">
+            {{ Session::get('error') }}
+        @endif
 
-        <label for="password">비밀번호:</label>
-        <input type="password" id="password" name="password" required>
+    <form method="post" action="{{ route('register') }}">
+        @csrf
+        <div>
+        <td> 이름 : 
+        <input type="text" class="form-control" name = 'name'/>
+        @error('name')
+        <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
+        </td><br>
+        <td> 이메일 :
+        <input type="text" class="form-control" name = 'email'/>
+        @error('email')
+        <div class="alert alert-danger">{{ $message }}</div>
+         @enderror
+        </td><br>
+        <td>
+        비밀번호 :
+        <input type="password" class="form-control" name ="password" id="password"   /> 
+        <div class="alert alert-danger validation hide">비밀번호는 4자 이상 12자 이하입니다</div>
+        </td><br>
+        <br> </div>
+        <button type="submit" class="alert alert-dark">회원가입</button>
+        </form>
 
-        <label for="confirm_password">비밀번호 확인:</label>
-        <input type="password" id="confirm_password" name="confirm_password" required>
-
-        <button type="submit">가입하기</button>
-    </form>
+        <script>
+            const elInputPassword = document.querySelector('#password');
+            const validation = document.querySelector(".validation");
+    
+            elInputPassword.addEventListener('input', function () {
+                // 비밀번호 길이 체크
+                if (elInputPassword.value.length >= 4 && elInputPassword.value.length <= 12) {
+                    validation.classList.add("hide");
+                } else {
+                    validation.classList.remove("hide");
+                }
+            });
+        </script>
 </body>
 </html>

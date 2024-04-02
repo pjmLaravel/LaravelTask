@@ -11,7 +11,7 @@
 </head>
 <body>
 
-   
+
     <div class="container w-50 mt-5">
             @if (Session::has('post_create'))
             <div class="alert alert-success" role="alert">
@@ -29,7 +29,7 @@
                 <input type="text" name="subject" value="{{ $post-> subject }}" class="form-control">
             </div>
             <div>
-                <textarea name="content" id="" cols="30" rows="10" class="form-control" style="resize: none">{{ $post->content }}</textarea>
+                <textarea name="content" id="" cols="30" rows="10" class="form-control" style="resize: none">{{ strip_tags($post->content) }}</textarea>
             </div>
             <div class="mt-2">
                 <button class="btn btn-primary">확인</button>
