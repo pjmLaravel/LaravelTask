@@ -40,38 +40,49 @@ class PostController extends Controller
 
     // 글 추가 form
     public function addPostSubmit(Request $request)
-    {
-        $user_id = auth()->user()->id;
-        $createdAt = now();
-        $request->validate([
-            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-        $image = $request->file('image');
-        $imageName = $image->getClientOriginalName();
-        $image->move(public_path('images'), $imageName);
+{
+    $user_id = auth()->user()->id;
+    $createdAt = now();
+    $request->validate([
+        'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+    ]);
+    $image = $request->file('image');
+    $originalName = $image->getClientOriginalName(); // 원본 파일명 가져오기
+    $imageName = pathinfo($originalName, PATHINFO_FILENAME) . '_' . time() . '.' . $image->getClientOriginalExtension(); // 새로운 파일명 생성
+    $image->move(public_path('images'), $imageName);
 
-        DB::table('post')->insert([
+    DB::table('post')->insert([
         'subject' => $request->subject,
         'content' => $request->content,
         'user_id' => $user_id,
         'created_at' => $createdAt,
         'img_path' => 'images/' . $imageName
-        ]);
-        // $imagePath = $request->file('image')->store('images', 'public');
-        // $imageName = pathinfo($imagePath, PATHINFO_FILENAME);
-
-        // DB::table('post')->insert([
-        // 'subject' => $request->subject,
-        // 'content' => $request->content,
-        // 'user_id' => $user_id,
-        // 'created_at' => $createdAt,
-        // 'img_path' => $imageName
-        // ]);
-
-        // return back()->with('post_create', '글이 성공적으로 등록되었습니다.');
-        return redirect()->route('post.getallpost')
+    ]);
+    return redirect()->route('post.getallpost')
         ->with('post_create', '글이 성공적으로 등록되었습니다.');
-    }
+}
+
+    // public function addPostSubmit(Request $request)
+    // {
+    //     $user_id = auth()->user()->id;
+    //     $createdAt = now();
+    //     $request->validate([
+    //         'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+    //     ]);
+    //     $image = $request->file('image');
+    //     $imageName = $image->getClientOriginalName();
+    //     $image->move(public_path('images'), $imageName);
+
+    //     DB::table('post')->insert([
+    //     'subject' => $request->subject,
+    //     'content' => $request->content,
+    //     'user_id' => $user_id,
+    //     'created_at' => $createdAt,
+    //     'img_path' => 'images/' . $imageName
+    //     ]);
+    //     return redirect()->route('post.getallpost')
+    //     ->with('post_create', '글이 성공적으로 등록되었습니다.');
+    // }
 
             // 개별 글 보기
         public function getPostById($id)
