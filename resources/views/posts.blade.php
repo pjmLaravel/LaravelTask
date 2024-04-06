@@ -100,8 +100,9 @@
         <tr>
           <th>작성자</th>
           <th>제목</th>
-          {{-- <th>내용</th> --}}
+          <th>작성 시간</th>
           <th>처리</th>
+
         </tr>
       </thead>
       <tbody>
@@ -110,7 +111,8 @@
 
           <td>{{$post->name}}</td>
           <td>{{$post->subject}}</td>
-
+          {{-- <td>{{ $post->created_at->diffForHumans() }}</td> --}}
+          <td>{{ \Carbon\Carbon::parse($post->created_at)->diffForHumans() }}</td>
           {{-- <td>{!! $post->content !!}</td> --}}
 
           <td>

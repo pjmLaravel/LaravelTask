@@ -12,6 +12,7 @@
         "laravel/sanctum": "^3.3",
         "laravel/socialite": "^5.12",
         "laravel/tinker": "^2.8",
+        "nesbot/carbon": "^2.72",
         "socialiteproviders/kakao": "^4.2",
         "socialiteproviders/zoho": "^4.1"
     },

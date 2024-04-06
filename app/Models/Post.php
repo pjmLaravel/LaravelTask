@@ -14,4 +14,10 @@ class Post extends Model
     {
         return $this->hasMany(Comment::class, 'parent_id');
     }
+
+    protected $dates = [
+        'created_at',
+        'updated_at',
+
+    ];
 }

@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
+use App\Http\Models\Comment;
 use Illuminate\Http\Request;
+use App\Models\Post as posts;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
-use App\Model\Post;
-use App\Models\Post as ModelsPost;
 
 class PostController extends Controller
 
@@ -30,11 +33,12 @@ class PostController extends Controller
     }
 
     // 댓글 목록
-    public function show(ModelsPost $post){
+    public function show(posts $post){
         $parentID = $post -> id;
         $comment = DB::table('comments')->where('parent_id', '=', $parentID)->get();
         return view('single-post', compact(['parentID','comments']));
     }
+
 
     // 글 추가
     public function addPost() {
@@ -43,10 +47,11 @@ class PostController extends Controller
     }
 
     // 글 추가 form
+
     public function addPostSubmit(Request $request)
 {
     $user_id = auth()->user()->id;
-    $createdAt = now();
+    $createdAt = Carbon::now();
     $request->validate([
                 'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
