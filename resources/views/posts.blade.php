@@ -6,9 +6,10 @@
     <title>게시글</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link href='https://unpkg.com/css.gg@2.0.0/icons/css/search.css' rel='stylesheet'>
     <style>
       .logout:hover {
-        text-decoration: underline; 
+        text-decoration: underline;
       }
       .ck-editor__editable_inline {
             min-height: 300px;
@@ -38,14 +39,14 @@
 
     {{-- {{ dd(Auth::user()) }} --}}
 
-   
-    @guest   
+
+    @guest
     {{-- <a href="{{ route('login.kakao') }}">
     <img src="/image/kakao.png" alt="카카오 로그인 이미지" style="margin-left:1000px; margin-top:30px">
     </a> --}}
     <div style="margin-left:1100px; margin-top:60px">
     <a href="{{ route('login.login') }}" class="btn btn-sm btn-secondary">로그인</a>
-    </div>  
+    </div>
   @endguest
 </div>
 <div style="margin-left:1100px; margin-top:50px">
@@ -62,17 +63,38 @@
 @auth
 <div style="margin-left:1000px; margin-top-5px">
     <p class="h4 mt-3" >{{ auth()->user()->name }} 님, 안녕하세요</p>
-  </div> 
+  </div>
     @else
     <div style="margin-left:1000px">
-    <p class="h4 mt-1">Guest님, 안녕하세요</p>  
+    <p class="h4 mt-1">Guest님, 안녕하세요</p>
     </div>
      @endauth
 </div>
 
 
-  <div class="container w-50 mt-5"> 
-  
+  <div class="container w-50 mt-5">
+    <div class="input-group">
+        <div class="form-outline" data-mdb-input-init>
+        <form action="{{ route('post.getallpost') }}" method="get">
+            <input type="text" class="form-control-sm" name="search" placeholder="{{ $search ?? '검색' }}" id="search">
+        </div>
+            <button class="btn btn-primary" data-mdb-ripple-init>
+                <i class="gg-search"></i>
+            </button>
+        </form>
+    </div>
+
+        {{-- <div class="input-group">
+            <div class="form-outline" data-mdb-input-init>
+              <input type="search" id="form1" class="form-control" />
+              <label class="form-label" for="form1">Search</label>
+            </div>
+            <button type="button" class="btn btn-primary" data-mdb-ripple-init>
+              <i class="fas fa-search"></i>
+            </button>
+          </div> --}}
+
+
     <table class="table">
       <thead>
         <tr>
@@ -85,14 +107,14 @@
       <tbody>
         @foreach ($posts as $post)
         <tr>
-  
+
           <td>{{$post->name}}</td>
           <td>{{$post->subject}}</td>
-          
+
           {{-- <td>{!! $post->content !!}</td> --}}
-        
+
           <td>
-            
+
             @if ($post->user_id == $loggedInUserId)
             <a href="{{ route('post.edit',$post->id) }}" class="btn btn-sm btn-warning">수정</a>
             @endif
@@ -103,7 +125,7 @@
               삭제
             </button>
 
-            <!-- Modal -->  
+            <!-- Modal -->
             <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
               <div class="modal-dialog">
                 <div class="modal-content">
@@ -112,7 +134,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
-                    게시글을 삭제하시겠습니까? 
+                    게시글을 삭제하시겠습니까?
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
@@ -121,11 +143,11 @@
                 </div>
               </div>
             </div>
-            
+
             {{-- <a href="{{ route('post.delete',$post->id) }}" class="btn btn-sm btn-danger">삭제</a> --}}
             @endif
           </td>
-          
+
         </tr>
         @endforeach
       </tbody>
@@ -133,9 +155,10 @@
     {{ $posts->links() }}
 
     <a href="{{ route('post.add') }}" class="btn btn-sm btn-link">글 작성하기</a>
-  
- 
- 
+    <a href="{{ route('post.getallpost') }}" class="btn btn-secondary">글 목록으로</a>
+
+
+
   </div>
   <script src="https://cdn.ckeditor.com/ckeditor5/37.1.0/classic/ckeditor.js"></script>
 </body>
