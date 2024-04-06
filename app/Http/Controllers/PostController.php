@@ -12,14 +12,18 @@ class PostController extends Controller
 
 {
     // 글 목록
-    public function getAllPost()
+    public function getAllPost(Request $request)
     {
         $loggedInUserId = auth()->id();
+        $search = $request->input('search');
 
         $posts = DB::table('post')
         ->join('users', 'post.user_id', '=', 'users.id')
         ->select('users.name','user_id','post.id', 'post.subject', 'post.content','post.created_at')
         ->orderBy('post.created_at', 'desc')
+        ->when($search, function($query, $search) {
+                $query->where('subject', 'like', "%$search%");
+        })
         ->paginate(7);
 
         return view('posts', compact('posts', 'loggedInUserId'));
