@@ -70,7 +70,7 @@
             <p>계정이 없으신가요? <a href="{{ route('login.registerForm') }}">회원가입</a></p>
             <div style="margin-top: -9px">
             <a href="{{ route('login.kakao') }}" style="margin-top:10px">
-            <img src="/image/kakao.png" alt="카카오 로그인 이미지">
+            <img src="images/kakao.png" alt="카카오 로그인 이미지">
             </a>
         </div>
         </div>
