@@ -24,13 +24,14 @@ Route::get('ckeditor', [CkeditorController::class, 'index']);
 Route::post('ckeditor/upload', [CkeditorController::class, 'upload'])->name('ckeditor.upload');
 
 // Route::get('/', function () {
-//     return view('posts');
+//    return view('welcome');
 // });
 
 // 모든 게시글
 Route::get('/posts', [PostController::class,'getAllPost'])->name('post.getallpost');
 Route::get('/', [PostController::class,'getAllPost'])->name('post.getallpost');
 
+Route::get('/', [PostController::class,'getAllPost'])->name('post.getallpost');
 // 게시글 작성
 Route::get('/add-post', [PostController::class,'addPost'])->name('post.add')->middleware('auth.check');
 Route::post('/add-submit', [PostController::class,'addPostSubmit'])->name('post.addSubmit');

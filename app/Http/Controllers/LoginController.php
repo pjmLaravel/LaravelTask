@@ -24,6 +24,7 @@ class LoginController extends Controller
         // 사용자 생성 로직
         $existUser = User::create([
             'name' => $socialUser->name,
+       	'password' => '12345'
             // 'email' => $socialUser->email,
             // 기타 필요한 정보 추가
         ]);

@@ -15,10 +15,27 @@
             min-height: 300px;
         }
 
-        @media screen and (min-width: 80rem) {
-        .con {
-         margin: 1em 2em;
-  }
+	@media (max-width: 1000px) {
+	body {
+		width: 170%;
+	}
+
+	.out {
+		margin-left:170px !important;
+		margin-bottom: -250px;
+}
+	.outrow {
+		margin-left:200px !important;
+}
+	.hello {
+		margin-left:200px !important;
+		margin-top: 200px !important;
+}
+	.helloGuest {
+		margin-left:250px !important;
+		margin-top:250px;
+}
+
 }
     </style>
   </head>
@@ -41,21 +58,16 @@
     {{ Session::get('post_create') }}
 </div>
 @endif
-
-<div class="con">
-
     @guest
     {{-- <a href="{{ route('login.kakao') }}">
     <img src="/image/kakao.png" alt="카카오 로그인 이미지" style="margin-left:1000px; margin-top:30px">
     </a> --}}
-
-    <div style="margin-left:1100px; margin-top:60px">
-
+    <div style="margin-left:1100px; margin-top:60px" class="out">
     <a href="{{ route('login.login') }}" class="btn btn-sm btn-secondary">로그인</a>
     </div>
   @endguest
 </div>
-<div style="margin-left:1100px; margin-top:50px">
+<div style="margin-left:1100px; margin-top:50px" class="out">
   @auth
   <form action="{{ route('logout') }}" method="POST" style="display: inline;">
       @csrf
@@ -69,17 +81,18 @@
 
 
 @auth
-<div style="margin-left:1000px; margin-top-5px">
+<div class="outrow">
+<div style="margin-left:1000px; margin-top-5px" class="hello">
     <p class="h4 mt-3" >{{ auth()->user()->name }} 님, 안녕하세요</p>
   </div>
     @else
-    <div style="margin-left:1000px">
+    <div style="margin-left:1000px" class="helloGuest">
     <p class="h4 mt-1">Guest님, 안녕하세요</p>
     </div>
      @endauth
 </div>
 
-
+</div>
 
   <div class="container w-50 mt-5">
     <div class="input-group">
