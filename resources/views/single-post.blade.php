@@ -110,7 +110,7 @@
                     @if ($reply->topcomment_id == $comments->id)
                         <div class="card" style="width: 40rem;">
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item">{{ $reply->userName   . ' : ' .   $reply->commentStory }}</li>
+                                <li class="list-group-item">ㄴ {{ $reply->userName   . ' : ' .   $reply->commentStory }}</li>
                             </ul>
                         </div>
                     @endif
