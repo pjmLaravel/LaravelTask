@@ -14,6 +14,12 @@
       .ck-editor__editable_inline {
             min-height: 300px;
         }
+
+        @media screen and (min-width: 80rem) {
+        .con {
+         margin: 1em 2em;
+  }
+}
     </style>
   </head>
 <body>
@@ -36,15 +42,15 @@
 </div>
 @endif
 
-
-    {{-- {{ dd(Auth::user()) }} --}}
-
+<div class="con">
 
     @guest
     {{-- <a href="{{ route('login.kakao') }}">
     <img src="/image/kakao.png" alt="카카오 로그인 이미지" style="margin-left:1000px; margin-top:30px">
     </a> --}}
+
     <div style="margin-left:1100px; margin-top:60px">
+
     <a href="{{ route('login.login') }}" class="btn btn-sm btn-secondary">로그인</a>
     </div>
   @endguest
@@ -60,6 +66,8 @@
 @endauth
 </div>
 
+
+
 @auth
 <div style="margin-left:1000px; margin-top-5px">
     <p class="h4 mt-3" >{{ auth()->user()->name }} 님, 안녕하세요</p>
@@ -70,6 +78,7 @@
     </div>
      @endauth
 </div>
+
 
 
   <div class="container w-50 mt-5">
@@ -83,16 +92,6 @@
             </button>
         </form>
     </div>
-
-        {{-- <div class="input-group">
-            <div class="form-outline" data-mdb-input-init>
-              <input type="search" id="form1" class="form-control" />
-              <label class="form-label" for="form1">Search</label>
-            </div>
-            <button type="button" class="btn btn-primary" data-mdb-ripple-init>
-              <i class="fas fa-search"></i>
-            </button>
-          </div> --}}
 
 
     <table class="table">
@@ -162,6 +161,8 @@
 
 
   </div>
+  {{-- 여기 --}}
+</div>
   <script src="https://cdn.ckeditor.com/ckeditor5/37.1.0/classic/ckeditor.js"></script>
 </body>
 </html>

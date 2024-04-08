@@ -47,14 +47,26 @@
         .hide {
             display: none
         }
+
+
+        .eyes {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            margin: auto 2px;
+            height: 30px;
+            font-size: 22px;
+            cursor: pointer;
+        }
     </style>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 <body>
 
-    @if (Session::has('error')) 
+    @if (Session::has('error'))
         <div class="alert alert-danger" role="alert">
             {{ Session::get('error') }}
         @endif
@@ -62,7 +74,7 @@
     <form method="post" action="{{ route('register') }}">
         @csrf
         <div>
-        <td> 이름 : 
+        <td> 이름 :
         <input type="text" class="form-control" name = 'name'/>
         @error('name')
         <div class="alert alert-danger">{{ $message }}</div>
@@ -76,8 +88,18 @@
         </td><br>
         <td>
         비밀번호 :
-        <input type="password" class="form-control" name ="password" id="password"   /> 
+    <div class="input-group">
+        <input type="password" class="form-control" name ="password" id="password"   />
+        <button class="btn btn-outline-secondary" type="button" id="togglePassword" style="border: none;">
+            <i id="toggleIcon" class="bi bi-eye-slash"></i>
+        </button>
+    </div>
         <div class="alert alert-danger validation hide">비밀번호는 4자 이상 12자 이하입니다</div>
+        </td><br>
+        <td>
+            비밀번호 확인 :
+            <input type="password" class="form-control" name="password_confirmation" id="password_confirmation" for="password" />
+            <div class="alert alert-danger validation_confirmation hide">비밀번호가 일치하지 않습니다</div>
         </td><br>
         <br> </div>
         <button type="submit" class="alert alert-dark">회원가입</button>
@@ -86,7 +108,12 @@
         <script>
             const elInputPassword = document.querySelector('#password');
             const validation = document.querySelector(".validation");
-    
+            const elInputPasswordConfirmation = document.querySelector('#password_confirmation');
+            const validationConfirmation = document.querySelector(".validation_confirmation");
+
+            const togglePassword = document.querySelector('#togglePassword');
+            const toggleIcon = document.querySelector('#toggleIcon');
+
             elInputPassword.addEventListener('input', function () {
                 // 비밀번호 길이 체크
                 if (elInputPassword.value.length >= 4 && elInputPassword.value.length <= 12) {
@@ -95,6 +122,25 @@
                     validation.classList.remove("hide");
                 }
             });
+
+            elInputPasswordConfirmation.addEventListener('input', function () {
+             // 비밀번호 확인 체크
+        if (elInputPassword.value === elInputPasswordConfirmation.value) {
+            validationConfirmation.classList.add("hide");
+       } else {
+            validationConfirmation.classList.remove("hide");
+        }
+    });
+
+    togglePassword.addEventListener('click', function () {
+        const type = elInputPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+        elInputPassword.setAttribute('type', type);
+        toggleIcon.classList.toggle('bi-eye');
+        toggleIcon.classList.toggle('bi-eye-slash');
+    });
+
+
+
         </script>
 </body>
 </html>
