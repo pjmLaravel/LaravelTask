@@ -58,7 +58,7 @@
 @endif
 
     <form action="{{ route('login') }}" method="post">
-        
+
         @csrf
 
         <h2>로그인</h2>
