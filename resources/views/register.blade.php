@@ -81,7 +81,7 @@
         @enderror
         </td><br>
         <td> 이메일 :
-        <input type="text" class="form-control" name = 'email'/>
+        <input type="text" class="form-control" name = 'email' id="email"/>
         @error('email')
         <div class="alert alert-danger">{{ $message }}</div>
          @enderror
@@ -102,7 +102,7 @@
             <div class="alert alert-danger validation_confirmation hide">비밀번호가 일치하지 않습니다</div>
         </td><br>
         <br> </div>
-        <button type="submit" class="alert alert-dark">회원가입</button>
+        <button type="submit" class="alert alert-dark" id="btn_login" disabled>회원가입</button>
         </form>
 
         <script>
@@ -113,6 +113,9 @@
 
             const togglePassword = document.querySelector('#togglePassword');
             const toggleIcon = document.querySelector('#toggleIcon');
+
+            const idForm = document.querySelector('#email');
+            const loginButton = document.querySelector('#btn_login');
 
             elInputPassword.addEventListener('input', function () {
                 // 비밀번호 길이 체크
@@ -126,18 +129,25 @@
             elInputPasswordConfirmation.addEventListener('input', function () {
              // 비밀번호 확인 체크
         if (elInputPassword.value === elInputPasswordConfirmation.value) {
-            validationConfirmation.classList.add("hide");
+            validationConfirmation.classList.add("hide")
+            loginButton.disabled = false;
+            loginButton.className = 'btn btn-primary'
        } else {
             validationConfirmation.classList.remove("hide");
+            loginButton.disabled = true; // 비밀번호 확인이 일치하지 않으면 버튼 비활성화
+            loginButton.className = 'alert alert-dark'
         }
     });
 
+        // 비밀번호 보기 숨기기
     togglePassword.addEventListener('click', function () {
         const type = elInputPassword.getAttribute('type') === 'password' ? 'text' : 'password';
         elInputPassword.setAttribute('type', type);
         toggleIcon.classList.toggle('bi-eye');
         toggleIcon.classList.toggle('bi-eye-slash');
     });
+
+    // 인풋값이 있어야 회원가입 활성화
 
 
 
