@@ -102,7 +102,7 @@
             <div class="alert alert-danger validation_confirmation hide">비밀번호가 일치하지 않습니다</div>
         </td><br>
         <br> </div>
-        <button type="submit" class="alert alert-dark" id="btn_login" disabled>회원가입</button>
+        <button type="submit" class="alert alert-dark" id="btn_login" style="cursor: default" disabled>회원가입</button>
         </form>
 
         <script>
@@ -132,10 +132,12 @@
             validationConfirmation.classList.add("hide")
             loginButton.disabled = false;
             loginButton.className = 'btn btn-primary'
+            loginButton.style.cursor = "pointer"
        } else {
             validationConfirmation.classList.remove("hide");
             loginButton.disabled = true; // 비밀번호 확인이 일치하지 않으면 버튼 비활성화
             loginButton.className = 'alert alert-dark'
+            loginButton.style.cursor = "default"
         }
     });
 
