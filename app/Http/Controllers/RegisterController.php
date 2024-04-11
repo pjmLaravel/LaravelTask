@@ -22,39 +22,28 @@ class RegisterController extends Controller
     public function login(Request $request) {
         $email = $request->email;
         $password = $request->password;
-    
+
         $credentials = ['email' => $email, 'password' => $password];
-    
+
         if (!auth()->attempt($credentials)) {
-            // return "로그인 정보가 정확하지 않습니다.";
+            
             return redirect()->back()->with('error', '로그인 정보가 정확하지 않습니다.');
         }
-    
-        // 로그인 성공한 경우 
+
+        // 로그인 성공한 경우
         return redirect()->route('post.getallpost');
     }
-    // public function login(Request $request){
-    //     $email = $request -> email;
-    //     $password = $request -> password;
-    //     $credentials = ['email'=>$email,'password'=>$password];
-        
-    //     if(! auth()->attempt($credentials)){
-    //     return "로그인정보가 정확하지 않습니다.";
-    //     dd(auth()->user());
-    //     }
-    //     return view('posts');
-    //     }
 
     // 회원가입 페이지 이동
-    public function showRegisterForm() 
-    
+    public function showRegisterForm()
+
     {
         return view('register');
     }
 
-    // 회원가입 
+    // 회원가입
 
-    
+
 public function register(Request $request){
     // 데이터 유효성 검사
     $validator = Validator::make($request->all(), [
@@ -79,21 +68,6 @@ public function register(Request $request){
 
     return redirect('login-email');
 }
-
-    // public function register(Request $request){
-    //     $name = $request->name;
-    //     $email = $request->email;
-    //     $password = $request->password;
-    //     if(sizeof(User::where('email',$email)->get())<1) {
-    //     User::create([
-    //     'name' => $name,
-    //     'email' => $email,
-    //     'password' => bcrypt($password) ]);
-    //     return redirect('login-email');
-    //     }else{
-    //     return redirect()->route('login.registerForm')->with('error', '이미 등록된 email입니다');
-    //     }
-    //     }
 
 
 

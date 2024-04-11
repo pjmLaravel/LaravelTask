@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\LoginController;
@@ -50,7 +51,7 @@ Route::post('/update-post/{id}', [PostController::class, 'updatePost'])->name('p
 
 // 글 삭제
 
-Route::get('/delete-post/{id}', [PostController::class, 'deletePost'])->name('post.delete');
+Route::delete('/delete-post/{id}', [PostController::class, 'deletePost'])->name('post.delete');
 
 
 // 카카오 로그dls
@@ -80,3 +81,21 @@ Route::post('/login',[RegisterController::class, 'login'])->name('login');
 Route::get('/register-form', [RegisterController::class, 'showRegisterForm'])->name('login.registerForm');
 Route::post('/register', [RegisterController::class, 'register'])->name('register');
 
+
+
+// 관리자 로그인
+
+Route::get('/admin-login', [AdminController::class, 'showAdminLogin'])->name('admin.login');
+Route::post('/admin-login-form',[AdminController::class, 'adminLogin'])->name('admin.loginForm');
+
+// 관리자 로그아웃
+
+Route::post('/admin-logout', [AdminController::class, 'Adminlogout'])->name('admin.logout');
+
+// 관리자 대시보드
+
+Route::get('/admin-dashboard', [AdminController::class, 'adminDashboard'])->middleware('admin.access')->name('admin.dashboard');
+
+
+// 관리자 글 삭제
+Route::delete('/admin-delete-post/{id}', [AdminController::class, 'AdmindeletePost'])->name('admin.delete');

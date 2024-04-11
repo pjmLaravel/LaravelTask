@@ -40,64 +40,24 @@
     </style>
   </head>
 <body>
-  <div>
-@if(session('error'))
-<script>
-    alert("{{ session('error') }}");
-</script>
-@endif
 
-@if (Session::has('post_delete'))
-<div class="alert alert-success" role="alert">
-    {{ Session::get('post_delete') }}
-</div>
-@endif
-
-@if (Session::has('post_create'))
-<div class="alert alert-success" role="alert">
-    {{ Session::get('post_create') }}
-</div>
-@endif
-    @guest
-    {{-- <a href="{{ route('login.kakao') }}">
-    <img src="/image/kakao.png" alt="카카오 로그인 이미지" style="margin-left:1000px; margin-top:30px">
-    </a> --}}
-    <div style="margin-left:1100px; margin-top:60px" class="out">
-    <a href="{{ route('login.login') }}" class="btn btn-sm btn-secondary">로그인</a>
+    @if(Auth::guard('admin')->check())
+    <div style="margin-left:1100px; margin-top:50px" class="out">
+      <form action="{{ route('admin.logout') }}" method="POST" style="display: inline;">
+          @csrf
+          <div>
+          <a href="{{ route('admin.logout') }}" onclick="event.preventDefault(); this.closest('form').submit();" class="logout">로그아웃</a>
+        </div>
+      </form>
     </div>
-  @endguest
-</div>
-<div style="margin-left:1100px; margin-top:50px" class="out">
-  @auth
-  <form action="{{ route('logout') }}" method="POST" style="display: inline;">
-      @csrf
-      <div>
-      <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();" class="logout">로그아웃</a>
-    </div>
-  </form>
-@endauth
-</div>
+    @endif
 
 
-
-@auth
-<div class="outrow">
-<div style="margin-left:1000px; margin-top-5px" class="hello">
-    <p class="h4 mt-3" >{{ auth()->user()->name }} 님, 안녕하세요</p>
-  </div>
-    @else
-    <div style="margin-left:1000px" class="helloGuest">
-    <p class="h4 mt-1">Guest님, 안녕하세요</p>
-    </div>
-     @endauth
-</div>
-
-</div>
 
   <div class="container w-50 mt-5">
     <div class="input-group">
         <div class="form-outline" data-mdb-input-init>
-        <form action="{{ route('post.getallpost') }}" method="get">
+        <form action="{{ route('admin.dashboard') }}" method="get">
             <input type="text" class="form-control-sm" name="search" placeholder="{{ $search ?? '검색' }}" id="search">
         </div>
             <button class="btn btn-primary" data-mdb-ripple-init>
@@ -129,12 +89,10 @@
 
           <td>
 
-            @if ($post->user_id == $loggedInUserId)
-            <a href="{{ route('post.edit',$post->id) }}" class="btn btn-sm btn-warning">수정</a>
-            @endif
+
             <a href="{{ route('post.getbyid',$post->id) }}" class="btn btn-sm btn-primary">보기</a>
             <!-- 삭제 모달 버튼-->
-            @if ($post->user_id == $loggedInUserId)
+
             <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $post->id }}">
                 삭제
               </button>
@@ -152,7 +110,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-          <form method="post" action="{{ route('post.delete',$post->id) }}">
+          <form method="post" action="{{ route('admin.delete',$post->id) }}">
             @csrf
             @method('DELETE')
             <button type="submit" class="btn btn-sm btn-danger">삭제</button>
@@ -161,7 +119,7 @@
       </div>
     </div>
   </div>
-            @endif
+
           </td>
 
         </tr>
@@ -169,9 +127,7 @@
       </tbody>
     </table>
     {{ $posts->links() }}
-
-    <a href="{{ route('post.add') }}" class="btn btn-sm btn-link">글 작성하기</a>
-    <a href="{{ route('post.getallpost') }}" class="btn btn-secondary">글 목록으로</a>
+    <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">글 목록으로</a>
 
 
 

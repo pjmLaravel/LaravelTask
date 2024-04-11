@@ -183,7 +183,7 @@ class PostController extends Controller
     {
         $loggedInUserId = auth()->user()->id;
         $postDeleteId = DB::table('post')->where('id', $id)->value('user_id');
-        DB::table('post')->where('id', $id)->delete();
+        // DB::table('post')->where('id', $id)->delete();
 
         if ($postDeleteId === $loggedInUserId) {
             DB::table('post')->where('id', $id)->delete();

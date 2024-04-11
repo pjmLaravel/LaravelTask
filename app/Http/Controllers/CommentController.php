@@ -78,7 +78,7 @@ class CommentController extends Controller
 
     public function delete($id) {
 
-        $commentdelete = DB::table('comments')->where('id', $id)->value('userID');
+        // $commentdelete = DB::table('comments')->where('id', $id)->value('userID');
         DB::table('comments')->where('id', $id)->delete();
         DB::table('comments')->where('topcomment_id', $id)->delete();
             return redirect()->back()->with('delete', '댓글이 삭제되었습니다.');
