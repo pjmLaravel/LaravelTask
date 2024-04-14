@@ -8,7 +8,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CkeditorController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ImageUploadController;
-
+use App\Http\Controllers\MypageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -81,7 +81,9 @@ Route::post('/login',[RegisterController::class, 'login'])->name('login');
 Route::get('/register-form', [RegisterController::class, 'showRegisterForm'])->name('login.registerForm');
 Route::post('/register', [RegisterController::class, 'register'])->name('register');
 
+// 마이페이지
 
+Route::get('/mypage', [MypageController::class, 'mypage'])->name('mypage');
 
 // 관리자 로그인
 

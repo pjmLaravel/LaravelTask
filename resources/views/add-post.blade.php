@@ -51,7 +51,7 @@
        ClassicEditor
     .create(document.querySelector('#editor'), {
         ckfinder: {
-            uploadUrl: '.../public/images', // 변경
+            uploadUrl: '{{ route('ckeditor.upload').'?_token='.csrf_token() }}'
         },
     })
     .catch(error => {
