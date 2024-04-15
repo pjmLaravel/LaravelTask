@@ -21,27 +21,29 @@ class PostController extends Controller
         $search = $request->input('search');
 
         $posts = DB::table('post')
-        ->join('users', 'post.user_id', '=', 'users.id')
-        ->select('users.name','user_id','post.id', 'post.subject', 'post.content','post.created_at')
-        ->orderBy('post.created_at', 'desc')
-        ->when($search, function($query, $search) {
+            ->join('users', 'post.user_id', '=', 'users.id')
+            ->select('users.name', 'user_id', 'post.id', 'post.subject', 'post.content', 'post.created_at')
+            ->orderBy('post.created_at', 'desc')
+            ->when($search, function ($query, $search) {
                 $query->where('subject', 'like', "%$search%");
-        })
-        ->paginate(7);
+            })
+            ->paginate(7);
 
         return view('posts', compact('posts', 'loggedInUserId'));
     }
 
     // 댓글 목록
-    public function show(posts $post){
-        $parentID = $post -> id;
+    public function show(posts $post)
+    {
+        $parentID = $post->id;
         $comment = DB::table('comments')->where('parent_id', '=', $parentID)->get();
-        return view('single-post', compact(['parentID','comments']));
+        return view('single-post', compact(['parentID', 'comments']));
     }
 
 
     // 글 추가
-    public function addPost() {
+    public function addPost()
+    {
 
         return view('add-post');
     }
@@ -49,88 +51,57 @@ class PostController extends Controller
     // 글 추가 form
 
     public function addPostSubmit(Request $request)
-{
-    $user_id = auth()->user()->id;
-    $createdAt = Carbon::now();
-    $request->validate([
-                'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            ]);
-    $imagePath = null;
+    {
+        $user_id = auth()->user()->id;
+        $createdAt = Carbon::now();
+        $request->validate([
+            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+        $imagePath = null;
 
-    if ($request->hasFile('image')) {
-        $image = $request->file('image');
-        $originalName = $image->getClientOriginalName(); // 원본 파일명 가져오기
-        $imageName = pathinfo($originalName, PATHINFO_FILENAME) . '_' . time() . '.' . $image->getClientOriginalExtension(); // 새로운 파일명 생성
-        $image->move(public_path('images'), $imageName);
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $originalName = $image->getClientOriginalName(); // 원본 파일명 가져오기
+            $imageName = pathinfo($originalName, PATHINFO_FILENAME) . '_' . time() . '.' . $image->getClientOriginalExtension(); // 새로운 파일명 생성
+            $image->move(public_path('images'), $imageName);
 
-        // 이미지 경로 설정
-        $imagePath = 'images/' . $imageName;
+            // 이미지 경로 설정
+            $imagePath = 'images/' . $imageName;
+        }
+
+
+        DB::table('post')->insert([
+            'subject' => $request->subject,
+            'content' => $request->content,
+            'user_id' => $user_id,
+            'created_at' => $createdAt,
+            'img_path' => $imagePath
+        ]);
+
+        return redirect()->route('post.getallpost')
+            ->with('post_create', '글이 성공적으로 등록되었습니다.');
     }
 
+    // 개별 글 보기
+    public function getPostById($id)
+    {
 
-    DB::table('post')->insert([
-        'subject' => $request->subject,
-        'content' => $request->content,
-        'user_id' => $user_id,
-        'created_at' => $createdAt,
-        'img_path' => $imagePath
-    ]);
+        $post = DB::table('post')
+            ->select('users.name', 'post.id', 'post.subject', 'post.content', 'post.img_path')
+            ->join('users', 'post.user_id', '=', 'users.id')
+            ->where('post.id', $id)
+            ->first();
 
-    return redirect()->route('post.getallpost')
-        ->with('post_create', '글이 성공적으로 등록되었습니다.');
-}
-
-//     public function addPostSubmit(Request $request)
-// {
-//     $user_id = auth()->user()->id;
-//     $createdAt = now();
-//     $request->validate([
-//         'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-//     ]);
-//     if ($request->hasFile('image')) {
-//     $image = $request->file('image');
-//     $originalName = $image->getClientOriginalName(); // 원본 파일명 가져오기
-//     $imageName = pathinfo($originalName, PATHINFO_FILENAME) . '_' . time() . '.' . $image->getClientOriginalExtension(); // 새로운 파일명 생성
-//     $image->move(public_path('images'), $imageName);
-
-//     DB::table('post')->insert([
-//         'img_path' => 'images/' . $imageName
-//     ]);
-//    }
-
-//     DB::table('post')->insert([
-//         'subject' => $request->subject,
-//         'content' => $request->content,
-//         'user_id' => $user_id,
-//         'created_at' => $createdAt,
-//         // 'img_path' => 'images/' . $imageName
-//     ]);
-//     return redirect()->route('post.getallpost')
-//         ->with('post_create', '글이 성공적으로 등록되었습니다.');
-// }
-
-
-            // 개별 글 보기
-        public function getPostById($id)
-        {
-
-            $post = DB::table('post')
-                    ->select('users.name', 'post.id', 'post.subject', 'post.content', 'post.img_path')
-                    ->join('users', 'post.user_id', '=', 'users.id')
-                    ->where('post.id', $id)
-                    ->first();
-
-                    if (!$post) {
-                        // 게시물이 존재하지 않는 경우 예외 처리
-                        return redirect()->back()->with('error', '게시물을 찾을 수 없습니다.');
-                    }
-
-            $parentID = $post -> id;
-                    $comment = DB::table('comments')->where('parent_id', '=', $parentID)->get();
-                    // return view('single-post', compact(['post','comment'])
-            return view('single-post', compact('post','comment'));
-
+        if (!$post) {
+            // 게시물이 존재하지 않는 경우 예외 처리
+            return redirect()->back()->with('error', '게시물을 찾을 수 없습니다.');
         }
+
+        $parentID = $post->id;
+        $comment = DB::table('comments')->where('parent_id', '=', $parentID)->get();
+        // return view('single-post', compact(['post','comment'])
+        return view('single-post', compact('post', 'comment'));
+    }
 
     //  글 수정 form
 
@@ -140,13 +111,13 @@ class PostController extends Controller
         $loggedInUserId = auth()->user()->id;
 
 
-         if ($postAuthorId === $loggedInUserId) {
-        $post = DB::table('post')->where('id', $id)->first();
-        return view('edit-post', compact('post'));
-    } else {
-        // 작성자가 아닌 경우 다른 처리 또는 리디렉션을 수행
-        return redirect()->route('post.getallpost')->with('error', '작성자만 수정할 수 있습니다.');
-    }
+        if ($postAuthorId === $loggedInUserId) {
+            $post = DB::table('post')->where('id', $id)->first();
+            return view('edit-post', compact('post'));
+        } else {
+            // 작성자가 아닌 경우 다른 처리 또는 리디렉션을 수행
+            return redirect()->route('post.getallpost')->with('error', '작성자만 수정할 수 있습니다.');
+        }
     }
 
     // 수정 처리
@@ -172,8 +143,6 @@ class PostController extends Controller
             return redirect()->route('post.edit', ['id' => $id])
                 ->with('post_create', '글이 성공적으로 수정되었습니다.');
         }
-
-
     }
 
 
@@ -189,20 +158,7 @@ class PostController extends Controller
             DB::table('post')->where('id', $id)->delete();
 
             return redirect()->route('post.getallpost')
-            ->with('post_delete', '글이 성공적으로 삭제되었습니다.');
+                ->with('post_delete', '글이 성공적으로 삭제되었습니다.');
+        }
     }
-
-    }
-
-
 }
-
-
-
-
-
-
-
-
-
-

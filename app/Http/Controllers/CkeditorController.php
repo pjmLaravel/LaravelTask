@@ -35,7 +35,7 @@ class CkeditorController extends Controller
 
             $url = asset('images/' . $fileName);
 
-            return response()->json(['fileName' => $fileName, 'uploaded'=> 1, 'url' => $url]);
+            return response()->json(['fileName' => $fileName, 'uploaded' => 1, 'url' => $url]);
         }
     }
 }

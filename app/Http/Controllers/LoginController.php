@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use App\Models\User;
 
@@ -18,29 +19,28 @@ class LoginController extends Controller
     {
         $socialUser = Socialite::driver('kakao')->user();
 
-    $existUser = User::where('name', $socialUser->name)->first();
+        $existUser = User::where('name', $socialUser->name)->first();
 
-    if (!$existUser) {
-        // 사용자 생성 로직
-        $existUser = User::create([
-            'name' => $socialUser->name,
-       	'password' => '12345'
-            // 'email' => $socialUser->email,
-            // 기타 필요한 정보 추가
-        ]);
+        if (!$existUser) {
+            // 사용자 생성 로직
+            $existUser = User::create([
+                'name' => $socialUser->name,
+                'password' => '12345'
+                // 'email' => $socialUser->email,
+                // 기타 필요한 정보 추가
+            ]);
+        }
+
+        auth()->login($existUser);
+
+        return redirect('/posts');
     }
 
-    auth()->login($existUser);
+    //   로그아웃
+    public function logout()
+    {
+        Auth::logout();
 
-    return redirect('/posts');
+        return redirect('/posts');
     }
-
-//   로그아웃
-  public function logout()
-  {
-      Auth::logout();
-
-      return redirect('/posts');
-  }
-
-    }
+}

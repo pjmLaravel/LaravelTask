@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('post', function (Blueprint $table) {
-            $table->string('img_path')->nullable();
+        Schema::create('notices', function (Blueprint $table) {
+            $table->id();
+            $table->string('subject');
+            $table->text('content');
+            $table->timestamps();
         });
     }
 
@@ -21,8 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('post', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('notices');
     }
 };

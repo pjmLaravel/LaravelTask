@@ -59,9 +59,6 @@
 </div>
 @endif
     @guest
-    {{-- <a href="{{ route('login.kakao') }}">
-    <img src="/image/kakao.png" alt="카카오 로그인 이미지" style="margin-left:1000px; margin-top:30px">
-    </a> --}}
     <div style="margin-left:1100px; margin-top:60px" class="out">
     <a href="{{ route('login.login') }}" class="btn btn-sm btn-secondary">로그인</a>
     </div>
@@ -78,13 +75,13 @@
 @endauth
 </div>
 
-
-
+{{-- 로그인 된 경우 --}}
 @auth
 <div class="outrow">
 <div style="margin-left:1000px; margin-top-5px" class="hello">
     <p class="h4 mt-3" >{{ auth()->user()->name }} 님, 안녕하세요</p>
   </div>
+  {{-- 비 로그인일 경우 --}}
     @else
     <div style="margin-left:1000px" class="helloGuest">
     <p class="h4 mt-1">Guest님, 안녕하세요</p>
@@ -104,7 +101,19 @@
                 <i class="gg-search"></i>
             </button>
         </form>
+        <div class="btn-group" style="margin-left: 15px">
+            <button class="btn btn-secondary btn-sm dropdown-toggle" id="dropdownMenuButton" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              게시글
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li><a class="dropdown-item" href="{{ route('post.getallpost') }}">게시글</a></li>
+                <li><a class="dropdown-item" href="{{ route('notice') }}">공지사항</a></li>
+            </ul>
+          </div>
+
+          {{-- 검색 div 끝 --}}
     </div>
+
 
 
     <table class="table">
@@ -178,6 +187,24 @@
   </div>
   {{-- 여기 --}}
 </div>
+<script>
+    // 페이지가 로드될 때 로컬 스토리지에서 선택한 값을 가져와서 버튼에 설정
+    document.addEventListener('DOMContentLoaded', function() {
+      const selectedValue = localStorage.getItem('selectedValue');
+      if (selectedValue) {
+        document.getElementById('dropdownMenuButton').textContent = selectedValue;
+      }
+    });
+
+    // 드롭다운 아이템 클릭 시 선택한 값을 로컬 스토리지에 저장하고 버튼에 설정하는 함수
+    document.querySelectorAll('.dropdown-item').forEach(item => {
+      item.addEventListener('click', function() {
+        const selectedValue = this.textContent;
+        localStorage.setItem('selectedValue', selectedValue);
+        document.getElementById('dropdownMenuButton').textContent = selectedValue;
+      });
+    });
+  </script>
   <script src="https://cdn.ckeditor.com/ckeditor5/37.1.0/classic/ckeditor.js"></script>
 </body>
 </html>

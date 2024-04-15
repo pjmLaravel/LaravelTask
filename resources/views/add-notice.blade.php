@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>게시글 작성</title>
+    <title>공지사항 작성</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/37.1.0/classic/ckeditor.js"></script>
@@ -22,16 +22,14 @@
             {{ Session::get('post_create') }}
         </div>
         @endif
-        <form action="{{route('post.addSubmit')}}" autocomplete="off" method="POST" enctype="multipart/form-data">
+        <form action="{{route('notice.addsubmit')}}" autocomplete="off" method="POST" enctype="multipart/form-data">
 
             @csrf
             <div class="mt-4 mb-3">
-                <span class="h2">게시판</span>
+                <span class="h2">공지사항 작성</span>
             </div>
             <div class="mb-2">
-                <input type="hidden" name="userId" value="">
-                <input type="text" name="subject" class="form-control" placeholder="제목을 입력하세요">
-
+                <input type="text" name="subject" class="form-control" placeholder=" 공지 제목을 입력하세요" value="[공지사항]  ">
             </div>
             <div>
                 {{-- 에디터 --}}
@@ -39,8 +37,8 @@
                 {{-- <textarea name="content" id="editor" cols="30" rows="10" class="form-control" style="resize: none"></textarea> --}}
             </div>
             <div class="mt-2">
-                <button class="btn btn-primary">글등록</button>
-                <a href="{{ route('post.getallpost') }}" class="btn btn-secondary">목록</a>
+                <button class="btn btn-primary">공지사항 등록</button>
+                <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">목록</a>
             </div>
         </form>
     </div>
