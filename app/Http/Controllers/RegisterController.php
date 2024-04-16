@@ -26,7 +26,7 @@ class RegisterController extends Controller
         $credentials = ['email' => $email, 'password' => $password];
 
         if (!auth()->attempt($credentials)) {
-            
+
             return redirect()->back()->with('error', '로그인 정보가 정확하지 않습니다.');
         }
 
@@ -69,7 +69,19 @@ public function register(Request $request){
     return redirect('login-email');
 }
 
+    // 이메일 중복 확인
+    public function checkEmail(Request $request)
+    {
+        $email = $request->email;
+        $user = User::where('email', $email)->first();
 
+        // 이메일이 존재하는 경우
+        if ($user) {
+            return response()->json(1);
+        } else {
+            return response()->json(0);
+        }
+    }
 
 
 }

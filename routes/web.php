@@ -82,6 +82,9 @@ Route::post('/login', [RegisterController::class, 'login'])->name('login');
 Route::get('/register-form', [RegisterController::class, 'showRegisterForm'])->name('login.registerForm');
 Route::post('/register', [RegisterController::class, 'register'])->name('register');
 
+// 이메일 중복검사
+Route::post('/emailCheck', [RegisterController::class, 'checkEmail'])->name('email.check');
+
 // 마이페이지
 
 Route::get('/mypage', [MypageController::class, 'mypage'])->name('mypage');
