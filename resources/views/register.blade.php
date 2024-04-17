@@ -132,15 +132,19 @@
         const loginButton = document.querySelector('#btn_login');
 
 
-        // 이메일 밸리데이션 체크
+
+        $('#email').blur(function() {
+            validateEmail();
+        });
+
         function validateEmail() {
             var emailInput = document.getElementById('email');
             var email = emailInput.value;
-            // var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
             var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
             var emailError = document.getElementById('emailError');
 
-            if (!emailPattern.test(email) || email.trim() === '') {
+            // 이메일 형식이 올바르지 않은 경우
+            if (!emailPattern.test(email)) {
                 emailError.innerHTML = '이메일 형식이 올바르지 않습니다.';
                 emailError.style.display = 'block';
             } else {
@@ -168,6 +172,8 @@
                 });
             }
         }
+
+
 
         // 여기까지
         elInputPassword.addEventListener('input', function() {
@@ -201,43 +207,6 @@
             toggleIcon.classList.toggle('bi-eye');
             toggleIcon.classList.toggle('bi-eye-slash');
         });
-
-
-
-
-        // // 이메일 중복 확인
-        // function checkEmail() {
-        //     var email = $('#email').val();
-
-        //     // AJAX 요청을 통해 이메일 중복 확인을 수행
-        //     $.ajax({
-        //         url: '/emailCheck', // 컨트롤러에서 처리할 주소
-        //         type: 'POST', // POST 방식으로 요청
-        //         data: {
-        //             "email": email // 이메일 데이터 전달
-        //         },
-        //         success: function(cnt) { // 성공 시
-        //             if (cnt == 0) { // 중복되지 않는 경우
-        //                 $("#vaildEmail").text("사용할 수 있는 이메일입니다.").css("color", "green");
-        //             } else { // 중복된 경우
-        //                 $("#vaildEmail").text("이미 존재하는 이메일입니다.").css("color", "red");
-        //                 alert("다른 이메일을 입력해주세요.");
-        //                 $('#email').val(''); // 입력값 초기화
-        //             }
-        //         },
-        //         error: function(request, status, error) { // 에러 발생 시
-        //             const errorMsg = JSON.parse(request.responseText);
-        //             alert("ERROR CODE: " + request.status + "\n" +
-        //                 "ERROR MESSAGE: " + errorMsg.message + "\n" +
-        //                 "상태가 지속될 경우 관리자에게 문의해주세요");
-        //         }
-        //     });
-        // }
-
-        // // 이메일 입력란의 포커스를 잃을 때(checkEmail 함수 호출)
-        // $('#email').blur(function() {
-        //     checkEmail();
-        // });
     </script>
 </body>
 
